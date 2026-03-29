@@ -1,0 +1,1531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Criminology Hub | Community Platform for Students</title>
+    
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Cloudinary Widget SDK -->
+    <script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #0f0f1a 100%);
+            color: #e4e4e7;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated Background Particles */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(circle at 20% 50%, rgba(139, 0, 0, 0.05) 0%, transparent 50%),
+                              radial-gradient(circle at 80% 80%, rgba(212, 175, 55, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1e1e2e;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #8b0000, #d4af37);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #a00000, #e5c158);
+        }
+
+        /* Container */
+        .app-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Glassmorphism Navbar */
+        .navbar {
+            background: rgba(10, 10, 20, 0.7);
+            backdrop-filter: blur(12px);
+            border-radius: 24px;
+            padding: 16px 32px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            animation: slideDown 0.5s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .logo h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, #d4af37, #8b0000);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        .logo p {
+            font-size: 0.8rem;
+            color: rgba(212, 175, 55, 0.7);
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 10px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: none;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #8b0000, #6b0000);
+            color: white;
+            box-shadow: 0 4px 15px rgba(139, 0, 0, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(139, 0, 0, 0.4);
+            background: linear-gradient(135deg, #9b0000, #7b0000);
+        }
+
+        .btn-secondary {
+            background: rgba(212, 175, 55, 0.15);
+            color: #d4af37;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(212, 175, 55, 0.25);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid rgba(212, 175, 55, 0.5);
+            color: #d4af37;
+        }
+
+        .btn-outline:hover {
+            background: rgba(212, 175, 55, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 8px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .user-info:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: scale(1.02);
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #d4af37;
+            transition: all 0.3s;
+        }
+
+        .user-avatar:hover {
+            transform: rotate(5deg) scale(1.05);
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            animation: fadeIn 0.6s ease;
+        }
+
+        .tab {
+            padding: 12px 28px;
+            background: rgba(30, 30, 46, 0.6);
+            backdrop-filter: blur(8px);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+            border: 1px solid transparent;
+        }
+
+        .tab:hover {
+            background: rgba(139, 0, 0, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, #8b0000, #6b0000);
+            border-color: #d4af37;
+            box-shadow: 0 4px 15px rgba(139, 0, 0, 0.4);
+        }
+
+        /* Content Sections */
+        .section {
+            display: none;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        .section.active-section {
+            display: block;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Resource Grid */
+        .resource-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .resource-card {
+            background: rgba(20, 20, 35, 0.6);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            cursor: pointer;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        .resource-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            border-color: rgba(212, 175, 55, 0.5);
+        }
+
+        .resource-preview {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            background: #1a1a2e;
+        }
+
+        .resource-info {
+            padding: 16px;
+        }
+
+        .resource-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .resource-meta {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 12px;
+            font-size: 0.8rem;
+            color: rgba(212, 175, 55, 0.8);
+        }
+
+        .resource-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        /* Chat Container */
+        .chat-container {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 20px;
+            background: rgba(20, 20, 35, 0.4);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            overflow: hidden;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            height: 600px;
+        }
+
+        .chat-messages {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .messages-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .message {
+            display: flex;
+            gap: 12px;
+            animation: slideInLeft 0.3s ease;
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .message-own {
+            flex-direction: row-reverse;
+        }
+
+        .message-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .message-bubble {
+            max-width: 70%;
+            padding: 10px 16px;
+            border-radius: 18px;
+            background: rgba(139, 0, 0, 0.3);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .message-own .message-bubble {
+            background: linear-gradient(135deg, #8b0000, #6b0000);
+        }
+
+        .message-username {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #d4af37;
+            margin-bottom: 4px;
+        }
+
+        .message-text {
+            font-size: 0.9rem;
+            word-wrap: break-word;
+        }
+
+        .message-time {
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.5);
+            margin-top: 4px;
+        }
+
+        .chat-input-area {
+            padding: 20px;
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+            display: flex;
+            gap: 12px;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 12px 16px;
+            border-radius: 50px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .chat-input:focus {
+            outline: none;
+            border-color: #d4af37;
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+        }
+
+        .typing-indicator {
+            padding: 8px 20px;
+            font-size: 0.8rem;
+            color: #d4af37;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .typing-dots {
+            display: flex;
+            gap: 3px;
+        }
+
+        .typing-dots span {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #d4af37;
+            animation: bounce 1.4s infinite;
+        }
+
+        .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes bounce {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-8px); }
+        }
+
+        /* Members Sidebar */
+        .members-sidebar {
+            background: rgba(0, 0, 0, 0.5);
+            border-left: 1px solid rgba(212, 175, 55, 0.2);
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .member-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px;
+            border-radius: 12px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .member-item:hover {
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        .member-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .member-info {
+            flex: 1;
+        }
+
+        .member-name {
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .online-status {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 6px;
+            animation: pulse 2s infinite;
+        }
+
+        .online {
+            background: #4caf50;
+            box-shadow: 0 0 5px #4caf50;
+        }
+
+        .offline {
+            background: #666;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7); }
+            70% { box-shadow: 0 0 0 5px rgba(76, 175, 80, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0); }
+        }
+
+        /* Modals */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #1a1a2e, #0f0f1a);
+            border-radius: 32px;
+            padding: 32px;
+            max-width: 500px;
+            width: 90%;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            animation: scaleUp 0.3s ease;
+        }
+
+        @keyframes scaleUp {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .modal-content h2 {
+            margin-bottom: 20px;
+            color: #d4af37;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #d4af37;
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+        }
+
+        /* Upload Zone */
+        .upload-zone {
+            border: 2px dashed rgba(212, 175, 55, 0.5);
+            border-radius: 16px;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 20px;
+        }
+
+        .upload-zone:hover {
+            border-color: #d4af37;
+            background: rgba(212, 175, 55, 0.05);
+        }
+
+        /* Filter Buttons */
+        .filter-buttons {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 8px 20px;
+            border-radius: 50px;
+            background: rgba(30, 30, 46, 0.6);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .filter-btn.active {
+            background: #8b0000;
+            color: white;
+        }
+
+        /* Toast Notifications */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 12px 24px;
+            border-radius: 12px;
+            background: #1a1a2e;
+            border-left: 4px solid;
+            animation: slideInRight 0.3s ease;
+            z-index: 1100;
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .chat-container {
+                grid-template-columns: 1fr;
+                height: 500px;
+            }
+            
+            .members-sidebar {
+                display: none;
+            }
+            
+            .navbar {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .resource-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Loading Skeleton */
+        .skeleton {
+            background: linear-gradient(90deg, #1a1a2e 25%, #2a2a3e 50%, #1a1a2e 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        /* Floating Action Button */
+        .fab {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #8b0000, #6b0000);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(139, 0, 0, 0.4);
+            transition: all 0.3s;
+            z-index: 100;
+        }
+
+        .fab:hover {
+            transform: rotate(90deg) scale(1.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Navbar -->
+        <div class="navbar">
+            <div class="logo">
+                <h1><i class="fas fa-gavel"></i> Criminology Hub</h1>
+                <p>Connect, Share, Learn</p>
+            </div>
+            <div class="nav-buttons" id="navButtons">
+                <div id="authButtons">
+                    <button class="btn btn-outline" onclick="openModal('loginModal')">Login</button>
+                    <button class="btn btn-primary" onclick="openModal('signupModal')">Sign Up</button>
+                </div>
+                <div id="userInfo" style="display: none;">
+                    <div class="user-info" onclick="viewProfile()">
+                        <img id="userAvatar" class="user-avatar" src="" alt="Avatar">
+                        <span id="userName"></span>
+                    </div>
+                    <button class="btn btn-secondary" onclick="logout()">Logout</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs" id="tabs" style="display: none;">
+            <div class="tab active" data-tab="gallery">📚 Public Gallery</div>
+            <div class="tab" data-tab="group">🎨 Group Gallery</div>
+            <div class="tab" data-tab="chat">💬 Chatroom</div>
+            <div class="tab admin-only" data-tab="admin" style="display: none;">👑 Admin Panel</div>
+        </div>
+
+        <!-- Public Gallery Section -->
+        <div id="gallerySection" class="section active-section">
+            <div class="filter-buttons">
+                <div class="filter-btn active" data-filter="all">All</div>
+                <div class="filter-btn" data-filter="image">Images</div>
+                <div class="filter-btn" data-filter="pdf">PDFs</div>
+            </div>
+            <input type="text" id="searchResources" placeholder="🔍 Search resources..." style="width: 100%; padding: 12px; border-radius: 12px; margin-bottom: 20px; background: rgba(0,0,0,0.5); border: 1px solid rgba(212,175,55,0.3); color: white;">
+            <div id="resourceGrid" class="resource-grid"></div>
+        </div>
+
+        <!-- Group Gallery Section -->
+        <div id="groupSection" class="section">
+            <button class="btn btn-primary" onclick="openUploadModal()" style="margin-bottom: 20px;">
+                <i class="fas fa-upload"></i> Upload Resource
+            </button>
+            <div id="groupResourceGrid" class="resource-grid"></div>
+        </div>
+
+        <!-- Chat Section -->
+        <div id="chatSection" class="section">
+            <div class="chat-container">
+                <div class="chat-messages">
+                    <div class="messages-area" id="messagesArea"></div>
+                    <div class="typing-indicator" id="typingIndicator" style="display: none;">
+                        <span>Someone is typing</span>
+                        <div class="typing-dots">
+                            <span></span><span></span><span></span>
+                        </div>
+                    </div>
+                    <div class="chat-input-area">
+                        <input type="text" id="messageInput" class="chat-input" placeholder="Type a message...">
+                        <button class="btn btn-primary" onclick="sendMessage()">Send</button>
+                    </div>
+                </div>
+                <div class="members-sidebar">
+                    <h3>Members (<span id="memberCount">0</span>)</h3>
+                    <input type="text" id="searchMembers" placeholder="Search members..." style="width: 100%; padding: 8px; margin: 10px 0; border-radius: 8px; background: rgba(0,0,0,0.5); border: 1px solid rgba(212,175,55,0.3); color: white;">
+                    <div id="membersList"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Admin Section -->
+        <div id="adminSection" class="section">
+            <h2>Admin Dashboard</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 20px;">
+                <div class="resource-card" style="padding: 20px;">
+                    <h3>Users</h3>
+                    <p id="adminUserCount">0</p>
+                    <button class="btn btn-secondary" onclick="loadUsers()">Manage Users</button>
+                </div>
+                <div class="resource-card" style="padding: 20px;">
+                    <h3>Resources</h3>
+                    <p id="adminResourceCount">0</p>
+                    <button class="btn btn-secondary" onclick="loadAllResources()">Manage Resources</button>
+                </div>
+                <div class="resource-card" style="padding: 20px;">
+                    <h3>Messages</h3>
+                    <p id="adminMessageCount">0</p>
+                    <button class="btn btn-secondary" onclick="loadMessages()">Manage Messages</button>
+                </div>
+            </div>
+            <div id="adminData"></div>
+        </div>
+    </div>
+
+    <!-- Floating Action Button -->
+    <div class="fab" onclick="scrollToTop()">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <!-- Modals -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <h2>Login</h2>
+            <form onsubmit="login(event)">
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="loginEmail" required>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="loginPassword" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Login</button>
+                <button type="button" class="btn btn-secondary" style="width: 100%; margin-top: 10px;" onclick="closeModal('loginModal')">Cancel</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="signupModal" class="modal">
+        <div class="modal-content">
+            <h2>Sign Up</h2>
+            <form onsubmit="signup(event)">
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="signupEmail" required>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="signupPassword" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Sign Up</button>
+                <button type="button" class="btn btn-secondary" style="width: 100%; margin-top: 10px;" onclick="closeModal('signupModal')">Cancel</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="profileModal" class="modal">
+        <div class="modal-content">
+            <h2>Your Profile</h2>
+            <form onsubmit="updateProfile(event)">
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" id="profileUsername" required>
+                </div>
+                <div class="form-group">
+                    <label>Bio</label>
+                    <textarea id="profileBio" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Profile Photo</label>
+                    <div class="upload-zone" onclick="uploadProfilePhoto()">
+                        <i class="fas fa-camera"></i> Click to upload photo
+                    </div>
+                    <img id="profilePhotoPreview" style="width: 100px; height: 100px; border-radius: 50%; margin-top: 10px;">
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Save Changes</button>
+                <button type="button" class="btn btn-secondary" style="width: 100%; margin-top: 10px;" onclick="closeModal('profileModal')">Cancel</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="uploadModal" class="modal">
+        <div class="modal-content">
+            <h2>Upload Resource</h2>
+            <div class="upload-zone" onclick="uploadToCloudinary()">
+                <i class="fas fa-cloud-upload-alt fa-3x"></i>
+                <p>Click to upload file (PDF or Image)</p>
+            </div>
+            <div class="form-group" style="margin-top: 20px;">
+                <label>Caption</label>
+                <input type="text" id="resourceCaption" placeholder="Enter a description...">
+            </div>
+            <button class="btn btn-primary" style="width: 100%; margin-top: 10px;" onclick="uploadToCloudinary()">Choose File</button>
+            <button class="btn btn-secondary" style="width: 100%; margin-top: 10px;" onclick="closeModal('uploadModal')">Cancel</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        // ============================================
+        // CONFIGURATION - REPLACE WITH YOUR KEYS
+        // ============================================
+        const SUPABASE_URL = 'https://fymudqbzztpaifrlskte.supabase.co'; // Replace with your URL
+        const SUPABASE_ANON_KEY = 'sb_publishable_-6RlLAYSx9_bbEKYPRL-1Q_0SOCD3H3'; // Replace with your anon key
+        const CLOUDINARY_CLOUD_NAME = 'YOUR_CLOUDINARY_CLOUD_NAME'; // Replace with your cloud name
+        const CLOUDINARY_UPLOAD_PRESET = 'YOUR_UPLOAD_PRESET'; // Replace with your upload preset
+
+        // Initialize Supabase
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        
+        let currentUser = null;
+        let currentProfile = null;
+        let currentFilter = 'all';
+        let currentSearch = '';
+        let typingTimeout = null;
+        let messageChannel = null;
+        let typingChannel = null;
+        let presenceChannel = null;
+
+        // ============================================
+        // AUTHENTICATION FUNCTIONS
+        // ============================================
+        
+        async function login(event) {
+            event.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+            if (error) {
+                showToast(error.message, 'error');
+            } else {
+                closeModal('loginModal');
+                showToast('Login successful!', 'success');
+                await loadUser();
+            }
+        }
+
+        async function signup(event) {
+            event.preventDefault();
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            
+            const { data, error } = await supabase.auth.signUp({ email, password });
+            if (error) {
+                showToast(error.message, 'error');
+            } else {
+                closeModal('signupModal');
+                showToast('Sign up successful! Please check your email.', 'success');
+                openModal('profileModal');
+            }
+        }
+
+        async function logout() {
+            await supabase.auth.signOut();
+            currentUser = null;
+            currentProfile = null;
+            document.getElementById('authButtons').style.display = 'flex';
+            document.getElementById('userInfo').style.display = 'none';
+            document.getElementById('tabs').style.display = 'none';
+            document.getElementById('gallerySection').classList.add('active-section');
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active-section'));
+            document.getElementById('gallerySection').classList.add('active-section');
+            showToast('Logged out successfully', 'info');
+            loadPublicResources();
+        }
+
+        async function loadUser() {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (user) {
+                currentUser = user;
+                const { data: profile } = await supabase
+                    .from('profiles')
+                    .select('*')
+                    .eq('id', user.id)
+                    .single();
+                
+                if (profile) {
+                    currentProfile = profile;
+                    document.getElementById('userName').textContent = profile.username || user.email;
+                    document.getElementById('userAvatar').src = profile.avatar_url || 'https://via.placeholder.com/150';
+                    document.getElementById('authButtons').style.display = 'none';
+                    document.getElementById('userInfo').style.display = 'flex';
+                    document.getElementById('tabs').style.display = 'flex';
+                    
+                    // Show admin tab if admin
+                    if (profile.is_admin) {
+                        document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'block');
+                    }
+                    
+                    await setupRealtime();
+                    await loadPublicResources();
+                    await loadGroupResources();
+                    await loadMembers();
+                    await loadMessages();
+                } else {
+                    openModal('profileModal');
+                }
+            }
+        }
+
+        // ============================================
+        // PROFILE FUNCTIONS
+        // ============================================
+        
+        function viewProfile() {
+            document.getElementById('profileUsername').value = currentProfile?.username || '';
+            document.getElementById('profileBio').value = currentProfile?.description || '';
+            document.getElementById('profilePhotoPreview').src = currentProfile?.avatar_url || 'https://via.placeholder.com/150';
+            openModal('profileModal');
+        }
+
+        async function updateProfile(event) {
+            event.preventDefault();
+            const username = document.getElementById('profileUsername').value;
+            const bio = document.getElementById('profileBio').value;
+            
+            const { error } = await supabase
+                .from('profiles')
+                .update({ username, description: bio })
+                .eq('id', currentUser.id);
+            
+            if (error) {
+                showToast(error.message, 'error');
+            } else {
+                currentProfile.username = username;
+                currentProfile.description = bio;
+                showToast('Profile updated!', 'success');
+                closeModal('profileModal');
+                loadUser();
+            }
+        }
+
+        function uploadProfilePhoto() {
+            const widget = window.cloudinary.createUploadWidget({
+                cloudName: CLOUDINARY_CLOUD_NAME,
+                uploadPreset: CLOUDINARY_UPLOAD_PRESET,
+                multiple: false
+            }, async (error, result) => {
+                if (!error && result && result.event === 'success') {
+                    const avatarUrl = result.info.secure_url;
+                    const { error: updateError } = await supabase
+                        .from('profiles')
+                        .update({ avatar_url: avatarUrl })
+                        .eq('id', currentUser.id);
+                    
+                    if (!updateError) {
+                        document.getElementById('profilePhotoPreview').src = avatarUrl;
+                        showToast('Photo updated!', 'success');
+                    }
+                }
+            });
+            widget.open();
+        }
+
+        // ============================================
+        // RESOURCE FUNCTIONS
+        // ============================================
+        
+        async function loadPublicResources() {
+            let query = supabase.from('resources').select('*').order('created_at', { ascending: false });
+            
+            if (currentFilter !== 'all') {
+                query = query.eq('file_type', currentFilter);
+            }
+            
+            const { data, error } = await query;
+            if (!error && data) {
+                let filtered = data;
+                if (currentSearch) {
+                    filtered = data.filter(r => r.caption?.toLowerCase().includes(currentSearch.toLowerCase()));
+                }
+                displayResources(filtered, 'resourceGrid');
+            }
+        }
+
+        async function loadGroupResources() {
+            let query = supabase.from('resources').select('*').order('created_at', { ascending: false });
+            
+            if (currentFilter !== 'all') {
+                query = query.eq('file_type', currentFilter);
+            }
+            
+            const { data, error } = await query;
+            if (!error && data) {
+                let filtered = data;
+                if (currentSearch) {
+                    filtered = data.filter(r => r.caption?.toLowerCase().includes(currentSearch.toLowerCase()));
+                }
+                displayResources(filtered, 'groupResourceGrid', true);
+            }
+        }
+
+        function displayResources(resources, containerId, showDelete = false) {
+            const container = document.getElementById(containerId);
+            if (!resources.length) {
+                container.innerHTML = '<div style="text-align: center; padding: 60px;"><i class="fas fa-folder-open fa-4x" style="color: #d4af37;"></i><p>No resources found</p></div>';
+                return;
+            }
+            
+            container.innerHTML = resources.map(resource => `
+                <div class="resource-card" onclick="viewResource('${resource.file_url}', '${resource.file_type}')">
+                    ${resource.file_type === 'image' ? 
+                        `<img src="${resource.file_url}" class="resource-preview" alt="${resource.caption}">` :
+                        `<div class="resource-preview" style="display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #8b0000, #6b0000);">
+                            <i class="fas fa-file-pdf fa-4x"></i>
+                        </div>`
+                    }
+                    <div class="resource-info">
+                        <div class="resource-title">${resource.caption || 'Untitled'}</div>
+                        <div class="resource-meta">
+                            <img src="${resource.avatar_url || 'https://via.placeholder.com/30'}" class="resource-avatar">
+                            <span>${resource.username}</span>
+                            <span>• ${new Date(resource.created_at).toLocaleDateString()}</span>
+                        </div>
+                        ${showDelete && (currentProfile?.is_admin || currentUser?.id === resource.user_id) ? 
+                            `<button class="btn btn-secondary" style="margin-top: 10px; width: 100%;" onclick="event.stopPropagation(); deleteResource('${resource.id}', '${resource.public_id}')">
+                                <i class="fas fa-trash"></i> Delete
+                            </button>` : ''
+                        }
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function viewResource(url, type) {
+            if (type === 'pdf') {
+                window.open(url, '_blank');
+            } else {
+                const modal = document.createElement('div');
+                modal.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);z-index:2000;display:flex;align-items:center;justify-content:center;cursor:pointer;';
+                modal.innerHTML = `<img src="${url}" style="max-width:90%;max-height:90%;object-fit:contain;">`;
+                modal.onclick = () => modal.remove();
+                document.body.appendChild(modal);
+            }
+        }
+
+        function uploadToCloudinary() {
+            const widget = window.cloudinary.createUploadWidget({
+                cloudName: CLOUDINARY_CLOUD_NAME,
+                uploadPreset: CLOUDINARY_UPLOAD_PRESET,
+                multiple: false,
+                resourceType: 'auto'
+            }, async (error, result) => {
+                if (!error && result && result.event === 'success') {
+                    const fileUrl = result.info.secure_url;
+                    const publicId = result.info.public_id;
+                    const fileType = result.info.resource_type === 'image' ? 'image' : 'pdf';
+                    const caption = document.getElementById('resourceCaption').value || 'Untitled';
+                    
+                    const { error: dbError } = await supabase
+                        .from('resources')
+                        .insert({
+                            user_id: currentUser.id,
+                            username: currentProfile.username,
+                            avatar_url: currentProfile.avatar_url,
+                            file_url: fileUrl,
+                            public_id: publicId,
+                            file_type: fileType,
+                            caption: caption
+                        });
+                    
+                    if (dbError) {
+                        showToast(dbError.message, 'error');
+                    } else {
+                        showToast('Upload successful!', 'success');
+                        closeModal('uploadModal');
+                        document.getElementById('resourceCaption').value = '';
+                        await loadPublicResources();
+                        await loadGroupResources();
+                    }
+                }
+            });
+            widget.open();
+        }
+
+        async function deleteResource(resourceId, publicId) {
+            if (confirm('Are you sure you want to delete this resource?')) {
+                const { error } = await supabase
+                    .from('resources')
+                    .delete()
+                    .eq('id', resourceId);
+                
+                if (error) {
+                    showToast(error.message, 'error');
+                } else {
+                    showToast('Resource deleted', 'success');
+                    await loadPublicResources();
+                    await loadGroupResources();
+                }
+            }
+        }
+
+        // ============================================
+        // CHAT FUNCTIONS
+        // ============================================
+        
+        async function setupRealtime() {
+            if (messageChannel) messageChannel.unsubscribe();
+            if (typingChannel) typingChannel.unsubscribe();
+            if (presenceChannel) presenceChannel.unsubscribe();
+            
+            // Messages channel
+            messageChannel = supabase.channel('messages-channel')
+                .on('postgres_changes', 
+                    { event: 'INSERT', schema: 'public', table: 'messages' },
+                    (payload) => {
+                        addMessageToChat(payload.new);
+                        updateTypingStatus();
+                    }
+                )
+                .subscribe();
+            
+            // Typing channel
+            typingChannel = supabase.channel('typing-channel')
+                .on('postgres_changes',
+                    { event: '*', schema: 'public', table: 'typing_status' },
+                    () => updateTypingStatus()
+                )
+                .subscribe();
+            
+            // Presence channel for online users
+            presenceChannel = supabase.channel('online-users', {
+                config: {
+                    presence: {
+                        key: currentUser?.id
+                    }
+                }
+            });
+            
+            presenceChannel
+                .on('presence', { event: 'sync' }, () => {
+                    updateOnlineMembers();
+                })
+                .subscribe(async (status) => {
+                    if (status !== 'SUBSCRIBED') return;
+                    await presenceChannel.track({
+                        user_id: currentUser.id,
+                        username: currentProfile.username,
+                        avatar_url: currentProfile.avatar_url
+                    });
+                });
+        }
+
+        async function loadMessages() {
+            const { data, error } = await supabase
+                .from('messages')
+                .select('*')
+                .order('created_at', { ascending: true })
+                .limit(100);
+            
+            if (!error && data) {
+                const messagesArea = document.getElementById('messagesArea');
+                messagesArea.innerHTML = '';
+                data.forEach(msg => addMessageToChat(msg));
+                messagesArea.scrollTop = messagesArea.scrollHeight;
+            }
+        }
+
+        function addMessageToChat(message) {
+            const messagesArea = document.getElementById('messagesArea');
+            const isOwn = message.user_id === currentUser?.id;
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isOwn ? 'message-own' : ''}`;
+            messageDiv.innerHTML = `
+                <img src="${message.avatar_url || 'https://via.placeholder.com/40'}" class="message-avatar">
+                <div class="message-bubble">
+                    <div class="message-username">${message.username}</div>
+                    <div class="message-text">${escapeHtml(message.message)}</div>
+                    <div class="message-time">${new Date(message.created_at).toLocaleTimeString()}</div>
+                </div>
+            `;
+            messagesArea.appendChild(messageDiv);
+            messagesArea.scrollTop = messagesArea.scrollHeight;
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
+            if (!message) return;
+            
+            const { error } = await supabase
+                .from('messages')
+                .insert({
+                    user_id: currentUser.id,
+                    username: currentProfile.username,
+                    avatar_url: currentProfile.avatar_url,
+                    message: message
+                });
+            
+            if (!error) {
+                input.value = '';
+                await updateTyping(false);
+            } else {
+                showToast(error.message, 'error');
+            }
+        }
+
+        document.getElementById('messageInput')?.addEventListener('input', () => {
+            updateTyping(true);
+            if (typingTimeout) clearTimeout(typingTimeout);
+            typingTimeout = setTimeout(() => updateTyping(false), 2000);
+        });
+
+        async function updateTyping(isTyping) {
+            if (!currentUser) return;
+            
+            await supabase
+                .from('typing_status')
+                .upsert({
+                    user_id: currentUser.id,
+                    username: currentProfile.username,
+                    is_typing: isTyping,
+                    updated_at: new Date()
+                });
+        }
+
+        async function updateTypingStatus() {
+            const { data } = await supabase
+                .from('typing_status')
+                .select('*')
+                .eq('is_typing', true)
+                .neq('user_id', currentUser?.id);
+            
+            const typingIndicator = document.getElementById('typingIndicator');
+            if (data && data.length > 0) {
+                typingIndicator.style.display = 'flex';
+                typingIndicator.querySelector('span').textContent = `${data[0].username} is typing`;
+            } else {
+                typingIndicator.style.display = 'none';
+            }
+        }
+
+        async function loadMembers() {
+            const { data } = await supabase
+                .from('profiles')
+                .select('*')
+                .order('username');
+            
+            if (data) {
+                document.getElementById('memberCount').textContent = data.length;
+                displayMembers(data);
+            }
+        }
+
+        function displayMembers(members) {
+            const membersList = document.getElementById('membersList');
+            const searchTerm = document.getElementById('searchMembers')?.value.toLowerCase() || '';
+            const filtered = members.filter(m => m.username?.toLowerCase().includes(searchTerm));
+            
+            membersList.innerHTML = filtered.map(member => `
+                <div class="member-item">
+                    <img src="${member.avatar_url || 'https://via.placeholder.com/40'}" class="member-avatar">
+                    <div class="member-info">
+                        <div class="member-name">${member.username || member.email}</div>
+                        <div>
+                            <span class="online-status ${member.is_online ? 'online' : 'offline'}"></span>
+                            ${member.is_online ? 'Online' : 'Offline'}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function updateOnlineMembers() {
+            // Presence tracking
+            loadMembers();
+        }
+
+        document.getElementById('searchMembers')?.addEventListener('input', () => loadMembers());
+
+        // ============================================
+        // ADMIN FUNCTIONS
+        // ============================================
+        
+        async function loadUsers() {
+            const { data } = await supabase.from('profiles').select('*');
+            const adminData = document.getElementById('adminData');
+            adminData.innerHTML = `
+                <h3>All Users</h3>
+                <div class="resource-grid">
+                    ${data?.map(user => `
+                        <div class="resource-card" style="padding: 20px;">
+                            <img src="${user.avatar_url || 'https://via.placeholder.com/80'}" style="width: 80px; height: 80px; border-radius: 50%;">
+                            <h4>${user.username || user.email}</h4>
+                            <p>${user.description || 'No bio'}</p>
+                            <p>Admin: ${user.is_admin ? 'Yes' : 'No'}</p>
+                            <button class="btn btn-secondary" onclick="deleteUser('${user.id}')">Delete User</button>
+                            ${!user.is_admin ? `<button class="btn btn-primary" onclick="makeAdmin('${user.id}')">Make Admin</button>` : ''}
+                        </div>
+                    `).join('') || '<p>No users found</p>'}
+                </div>
+            `;
+        }
+
+        async function loadAllResources() {
+            const { data } = await supabase.from('resources').select('*');
+            displayResources(data, 'adminData', true);
+        }
+
+        async function loadMessages() {
+            const { data } = await supabase.from('messages').select('*').order('created_at', { ascending: false }).limit(50);
+            const adminData = document.getElementById('adminData');
+            adminData.innerHTML = `
+                <h3>Recent Messages</h3>
+                ${data?.map(msg => `
+                    <div class="resource-card" style="padding: 15px; margin-bottom: 10px;">
+                        <p><strong>${msg.username}</strong>: ${msg.message}</p>
+                        <small>${new Date(msg.created_at).toLocaleString()}</small>
+                        <button class="btn btn-secondary" style="margin-left: 10px;" onclick="deleteMessage('${msg.id}')">Delete</button>
+                    </div>
+                `).join('') || '<p>No messages</p>'}
+            `;
+        }
+
+        async function deleteUser(userId) {
+            if (confirm('Delete this user permanently?')) {
+                const { error } = await supabase.from('profiles').delete().eq('id', userId);
+                if (error) showToast(error.message, 'error');
+                else showToast('User deleted', 'success');
+                loadUsers();
+            }
+        }
+
+        async function makeAdmin(userId) {
+            const { error } = await supabase.from('profiles').update({ is_admin: true }).eq('id', userId);
+            if (error) showToast(error.message, 'error');
+            else showToast('Admin privileges granted', 'success');
+            loadUsers();
+        }
+
+        async function deleteMessage(messageId) {
+            const { error } = await supabase.from('messages').delete().eq('id', messageId);
+            if (error) showToast(error.message, 'error');
+            else showToast('Message deleted', 'success');
+            loadMessages();
+        }
+
+        // ============================================
+        // UTILITY FUNCTIONS
+        // ============================================
+        
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.style.borderLeftColor = type === 'success' ? '#4caf50' : type === 'error' ? '#f44336' : '#d4af37';
+            toast.innerHTML = `
+                <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i>
+                ${message}
+            `;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('active');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        function openUploadModal() {
+            if (!currentUser) {
+                showToast('Please login to upload', 'error');
+                return;
+            }
+            openModal('uploadModal');
+        }
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Tab switching
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                const tabId = tab.dataset.tab;
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                document.querySelectorAll('.section').forEach(s => s.classList.remove('active-section'));
+                
+                if (tabId === 'gallery') document.getElementById('gallerySection').classList.add('active-section');
+                else if (tabId === 'group') document.getElementById('groupSection').classList.add('active-section');
+                else if (tabId === 'chat') document.getElementById('chatSection').classList.add('active-section');
+                else if (tabId === 'admin') document.getElementById('adminSection').classList.add('active-section');
+                
+                if (tabId === 'chat' && currentUser) loadMessages();
+                if (tabId === 'admin' && currentProfile?.is_admin) loadUsers();
+            });
+        });
+
+        // Filter buttons
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentFilter = btn.dataset.filter;
+                loadPublicResources();
+                loadGroupResources();
+            });
+        });
+
+        // Search
+        document.getElementById('searchResources')?.addEventListener('input', (e) => {
+            currentSearch = e.target.value;
+            loadPublicResources();
+            loadGroupResources();
+        });
+
+        // Initialize
+        supabase.auth.onAuthStateChange((event, session) => {
+            if (event === 'SIGNED_IN') loadUser();
+            if (event === 'SIGNED_OUT') {
+                currentUser = null;
+                currentProfile = null;
+            }
+        });
+        
+        loadUser();
+        loadPublicResources();
+
+        // Close modals on outside click
+        window.onclick = (event) => {
+            if (event.target.classList.contains('modal')) {
+                event.target.classList.remove('active');
+            }
+        };
+    </script>
+</body>
+</html>
